@@ -5,6 +5,7 @@ import com.example.demo.dto.LoginResponse;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.dto.RegisterResponse;
 import com.example.demo.service.AuthService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,14 +19,21 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public RegisterResponse register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
         authService.register(request);
-        return new RegisterResponse(true, "User registered successfully");
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         String token = authService.login(request);
-        return new LoginResponse(true, token);
+        return ResponseEntity.ok(new LoginResponse(token));
     }
+
+    @PostMapping("/send-code")
+    public ResponseEntity<?> sendCode(@RequestParam String email) {
+        authService.sendVerificationCode(email);
+        return ResponseEntity.ok("Verification code sent");
+    }
+
 }

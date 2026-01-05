@@ -6,7 +6,7 @@ public class LoginResponse {
     private String message;
 
 
-    public LoginResponse(boolean success, String message) {
+    public LoginResponse(String message) {
         this.success = success;
         this.message = message;
     }
